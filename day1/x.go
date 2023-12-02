@@ -1,7 +1,6 @@
 package main
 
 import (
-	"aoc2023/util"
 	"fmt"
 	"strconv"
 	"strings"
