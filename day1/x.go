@@ -36,8 +36,7 @@ func silver(line string) int {
 
 func gold(line string) int {
 	named := func(num string, i int) bool {
-		l := len(num)
-		if i+l > len(line) {
+		if i+len(num) > len(line) {
 			return false
 		}
 		for j := 0; j < len(num); j++ {
