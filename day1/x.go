@@ -1,6 +1,7 @@
 package main
 
 import (
+	"aoc2023/utils"
 	"fmt"
 	"strconv"
 	"strings"
@@ -91,7 +92,7 @@ func gold(line string) int {
 
 func main() {
 	sums, sumg := 0, 0
-	for _, l := range util.Input("day1/input") {
+	for _, l := range utils.Input("day1/input") {
 		sums += silver(l)
 		sumg += gold(l)
 	}

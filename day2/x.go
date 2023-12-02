@@ -1,6 +1,7 @@
 package main
 
 import (
+	"aoc2023/utils"
 	"fmt"
 	"strings"
 )
@@ -25,23 +26,23 @@ func (g *game) check(cr, cg, cb int) bool {
 }
 
 func parseGame(line string) *game {
-	parts := util.SplitTrim(line, ":")
+	parts := utils.SplitTrim(line, ":")
 	g := &game{
-		id: util.Atoi(strings.TrimPrefix(parts[0], "Game ")),
+		id: utils.Atoi(strings.TrimPrefix(parts[0], "Game ")),
 	}
 
 	rounds := strings.Split(parts[1], ";")
 	for _, round := range rounds {
-		vs := util.SplitTrim(round, ",")
+		vs := utils.SplitTrim(round, ",")
 		for _, v := range vs {
-			pv := util.SplitTrim(v, " ")
+			pv := utils.SplitTrim(v, " ")
 			switch pv[1] {
 			case "green":
-				g.green = max(g.green, util.Atoi(pv[0]))
+				g.green = max(g.green, utils.Atoi(pv[0]))
 			case "blue":
-				g.blue = max(g.blue, util.Atoi(pv[0]))
+				g.blue = max(g.blue, utils.Atoi(pv[0]))
 			case "red":
-				g.red = max(g.red, util.Atoi(pv[0]))
+				g.red = max(g.red, utils.Atoi(pv[0]))
 			}
 		}
 	}
@@ -82,6 +83,6 @@ func main() {
 	fmt.Printf("TEST SILVER: %d\n", silver(TestInput, 12, 13, 14))
 	fmt.Printf("TEST GOLD: %d\n", gold(TestInput))
 
-	fmt.Printf("SILVER: %d\n", silver(util.Input("./day2/input"), 12, 13, 14))
-	fmt.Printf("GOLD: %d\n", gold(util.Input("./day2/input")))
+	fmt.Printf("SILVER: %d\n", silver(utils.Input("./day2/input"), 12, 13, 14))
+	fmt.Printf("GOLD: %d\n", gold(utils.Input("./day2/input")))
 }
