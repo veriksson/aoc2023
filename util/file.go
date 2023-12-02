@@ -12,6 +12,7 @@ func Input(day string) []string {
 	}
 
 	sf := string(f)
-	lines := strings.Split(sf, "\r\n")
+	lines := strings.Split(sf, "\n")
+
 	return lines[:len(lines)-1]
 }
