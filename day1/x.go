@@ -56,48 +56,29 @@ func gold(line string) int {
 			continue
 		}
 
+		// skip char if not start of named number
 		if c != 'o' && c != 't' && c != 'f' && c != 's' && c != 'e' && c != 'n' {
 			continue
 		}
 
 		if named("one", i) {
 			sb.WriteRune('1')
-			continue
-		}
-
-		if named("two", i) {
+		} else if named("two", i) {
 			sb.WriteRune('2')
-			continue
-		}
-
-		if named("three", i) {
+		} else if named("three", i) {
 			sb.WriteRune('3')
-			continue
-		}
-
-		if named("four", i) {
+		} else if named("four", i) {
 			sb.WriteRune('4')
-			continue
-		}
-		if named("five", i) {
+		} else if named("five", i) {
 			sb.WriteRune('5')
-			continue
-		}
-		if named("six", i) {
+		} else if named("six", i) {
 			sb.WriteRune('6')
-			continue
-		}
-		if named("seven", i) {
+		} else if named("seven", i) {
 			sb.WriteRune('7')
-			continue
-		}
-		if named("eight", i) {
+		} else if named("eight", i) {
 			sb.WriteRune('8')
-			continue
-		}
-		if named("nine", i) {
+		} else if named("nine", i) {
 			sb.WriteRune('9')
-			continue
 		}
 	}
 
