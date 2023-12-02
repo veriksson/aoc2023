@@ -16,27 +16,13 @@ var TestInput = []string{
 
 type game struct {
 	id    int
-	cubes []cubes
-	tr    int
-	tg    int
-	tb    int
-}
-
-func (g *game) add(c cubes) {
-	g.cubes = append(g.cubes, c)
-	g.tr = max(g.tr, c.red)
-	g.tg = max(g.tg, c.green)
-	g.tb = max(g.tb, c.blue)
-}
-
-func (g *game) check(cr, cg, cb int) bool {
-	return g.tr <= cr && g.tg <= cg && g.tb <= cb
-}
-
-type cubes struct {
 	red   int
 	green int
 	blue  int
+}
+
+func (g *game) check(cr, cg, cb int) bool {
+	return g.red <= cr && g.green <= cg && g.blue <= cb
 }
 
 func parseGame(line string) *game {
@@ -45,21 +31,20 @@ func parseGame(line string) *game {
 		id: util.Atoi(strings.TrimPrefix(parts[0], "Game ")),
 	}
 
-	bags := strings.Split(parts[1], ";")
-	for _, bag := range bags {
-		v := util.SplitTrim(bag, ",")
-		c := cubes{}
-		for _, vv := range v {
-			pv := util.SplitTrim(vv, " ")
-			if pv[1] == "green" {
-				c.green = util.Atoi(pv[0])
-			} else if pv[1] == "blue" {
-				c.blue = util.Atoi(pv[0])
-			} else {
-				c.red = util.Atoi(pv[0])
+	rounds := strings.Split(parts[1], ";")
+	for _, round := range rounds {
+		vs := util.SplitTrim(round, ",")
+		for _, v := range vs {
+			pv := util.SplitTrim(v, " ")
+			switch pv[1] {
+			case "green":
+				g.green = max(g.green, util.Atoi(pv[0]))
+			case "blue":
+				g.blue = max(g.blue, util.Atoi(pv[0]))
+			case "red":
+				g.red = max(g.red, util.Atoi(pv[0]))
 			}
 		}
-		g.add(c)
 	}
 	return g
 }
@@ -89,7 +74,7 @@ func gold(input []string) int {
 
 	sum := 0
 	for _, g := range games {
-		sum += g.tr * g.tg * g.tb
+		sum += g.red * g.green * g.blue
 	}
 	return sum
 }
