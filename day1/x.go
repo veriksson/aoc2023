@@ -25,9 +25,9 @@ func silver(line string) int {
 			sb.WriteRune(c)
 		}
 	}
-	full := sb.String()
-	fulln := string(full[0]) + string(full[len(full)-1])
-	num, err := strconv.Atoi(fulln)
+	str := sb.String()
+	str = string(str[0]) + string(str[len(str)-1])
+	num, err := strconv.Atoi(str)
 	if err != nil {
 		panic(err)
 	}
@@ -81,9 +81,9 @@ func gold(line string) int {
 		}
 	}
 
-	full := sb.String()
-	fulln := string(full[0]) + string(full[len(full)-1])
-	num, err := strconv.Atoi(fulln)
+	str := sb.String()
+	str = string(str[0]) + string(str[len(str)-1])
+	num, err := strconv.Atoi(str)
 	if err != nil {
 		panic(err)
 	}
