@@ -152,7 +152,22 @@ func silver(input []string) int {
 	return sum
 }
 
+func gold(input []string) int {
+	b := parse(input)
+	sum := 0
+	for _, sym := range b.syms {
+		ns := neighbourhood(sym, b)
+		if len(ns) == 2 {
+			sum += ns[0] * ns[1]
+		}
+	}
+	return sum
+}
+
 func main() {
 	fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
 	fmt.Printf("SILVER: %d\n", silver(utils.Input("day3/input")))
+
+	fmt.Printf("TEST GOLD: %d\n", gold(TestInput))
+	fmt.Printf("GOLD: %d\n", gold(utils.Input("day3/input")))
 }
