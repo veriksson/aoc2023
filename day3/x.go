@@ -137,7 +137,6 @@ func expand(x, y int, b *board) (int, int, int) {
 		sb.WriteRune(b.vals[n])
 	}
 
-	vv := string(b.vals[utils.XYToI(x, y, b.w)])
 	return utils.Atoi(sb.String()), orig, end
 }
 
@@ -155,4 +154,5 @@ func silver(input []string) int {
 
 func main() {
 	fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
+	fmt.Printf("SILVER: %d\n", silver(utils.Input("day3/input")))
 }
