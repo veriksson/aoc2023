@@ -30,5 +30,5 @@ func IToY(i, W int) int {
 }
 
 func XYToI(x, y, W int) int {
-	return y*W+x
+	return y*W + x
 }
