@@ -20,3 +20,15 @@ func SplitTrim(s, sep string) []string {
 	}
 	return items
 }
+
+func IToX(i, W int) int {
+	return i % W
+}
+
+func IToY(i, W int) int {
+	return i / W
+}
+
+func XYToI(x, y, W int) int {
+	return y*W+x
+}
