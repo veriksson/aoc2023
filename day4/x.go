@@ -1,6 +1,8 @@
 package main
 
 import "fmt"
+import "strings"
+import "aoc2023/utils"
 
 var TestInput = []string{
 	"Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53",
@@ -9,6 +11,24 @@ var TestInput = []string{
 	"Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83",
 	"Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36",
 	"Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11",
+}
+
+type card struct {
+	wn, mn []int
+}
+
+func parse(input []string) []card {
+	var cards []card
+	for _, line := range input {
+		_, numbers, _ := strings.Cut(line, ": ")
+		wns, mns := strings.Cut(numbers, "|")
+
+		wn := utils.IntsOfString(wns)
+		mn := utils.IntsOfString(mns)
+
+		cards = append(cards, card{wn, mn})
+	}
+	return cards
 }
 
 func main() {
