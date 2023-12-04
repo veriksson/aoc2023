@@ -31,6 +31,29 @@ func parse(input []string) []card {
 	return cards
 }
 
+func score(c card) int {
+	wm := make(map[int]struct{})
+	s := 0
+	for _, w := range c.wn {
+		wm[w] = struct{}{}
+	}
+	for _, m := range c.mn {
+		if _, ok := wm[m]; ok {
+			s++
+		}
+	}
+	return s
+}
+
+func silver(input []string) int {
+	cards := parse(input)
+	sum := 0
+	for _, card := range cards {
+		sum += score(card)
+	}
+	return sum
+}
+
 func main() {
-	fmt.Println("day 4")
+	fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
 }
