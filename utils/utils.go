@@ -32,3 +32,11 @@ func IToY(i, W int) int {
 func XYToI(x, y, W int) int {
 	return y*W + x
 }
+
+func IntsOfString(line string) []int {
+	var ret []int
+	for _, num := range SplitTrim(line, " ") {
+		ret = append(ret, Atoi(num))
+	}
+	return ret
+}
