@@ -1,5 +1,6 @@
 package main
 
+import "math"
 import "fmt"
 import "strings"
 import "aoc2023/utils"
@@ -21,7 +22,7 @@ func parse(input []string) []card {
 	var cards []card
 	for _, line := range input {
 		_, numbers, _ := strings.Cut(line, ": ")
-		wns, mns := strings.Cut(numbers, "|")
+		wns, mns, _ := strings.Cut(numbers, "|")
 
 		wn := utils.IntsOfString(wns)
 		mn := utils.IntsOfString(mns)
@@ -33,16 +34,19 @@ func parse(input []string) []card {
 
 func score(c card) int {
 	wm := make(map[int]struct{})
-	s := 0
 	for _, w := range c.wn {
 		wm[w] = struct{}{}
 	}
+	mul := 0
 	for _, m := range c.mn {
 		if _, ok := wm[m]; ok {
-			s++
+			mul++
 		}
 	}
-	return s
+	if mul < 2 {
+		return mul
+	}
+	return  int(math.Pow(float64(2), float64(mul-1)))
 }
 
 func silver(input []string) int {
