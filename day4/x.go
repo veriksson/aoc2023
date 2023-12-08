@@ -1,9 +1,11 @@
 package main
 
-import "math"
-import "fmt"
-import "strings"
-import "aoc2023/utils"
+import (
+	"aoc2023/utils"
+	"fmt"
+	"math"
+	"strings"
+)
 
 var TestInput = []string{
 	"Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53",
@@ -15,19 +17,21 @@ var TestInput = []string{
 }
 
 type card struct {
+	id     int
 	wn, mn []int
 }
 
 func parse(input []string) []card {
 	var cards []card
 	for _, line := range input {
-		_, numbers, _ := strings.Cut(line, ": ")
+		id, numbers, _ := strings.Cut(line, ": ")
 		wns, mns, _ := strings.Cut(numbers, "|")
 
 		wn := utils.IntsOfString(wns)
 		mn := utils.IntsOfString(mns)
 
-		cards = append(cards, card{wn, mn})
+		id = strings.TrimSpace(strings.TrimPrefix(id, "Card"))
+		cards = append(cards, card{utils.Atoi(id), wn, mn})
 	}
 	return cards
 }
@@ -46,7 +50,7 @@ func score(c card) int {
 	if mul < 2 {
 		return mul
 	}
-	return  int(math.Pow(float64(2), float64(mul-1)))
+	return int(math.Pow(float64(2), float64(mul-1)))
 }
 
 func silver(input []string) int {
@@ -58,6 +62,48 @@ func silver(input []string) int {
 	return sum
 }
 
+func count(c card) int {
+	wm := make(map[int]struct{})
+	for _, w := range c.wn {
+		wm[w] = struct{}{}
+	}
+	cnt := 0
+	for _, m := range c.mn {
+		if _, ok := wm[m]; ok {
+			cnt++
+		}
+	}
+	return cnt
+}
+
+func gold(input []string) int {
+	cards := parse(input)
+
+	cbc := make(map[int][]struct{})
+	for _, card := range cards {
+		cbc[card.id] = append(cbc[card.id], struct{}{})
+	}
+
+	for _, card := range cards {
+		cnt := count(card)
+		for range cbc[card.id] {
+			for i := card.id + 1; i <= cnt+card.id; i++ {
+				cbc[i] = append(cbc[i], struct{}{})
+			}
+		}
+	}
+
+	sum := 0
+	for _, v := range cbc {
+		sum += len(v)
+	}
+	return sum
+}
+
 func main() {
 	fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
+	fmt.Printf("SILVER: %d\n", silver(utils.Input("day4/input")))
+	fmt.Printf("TEST GOLD: %d\n", gold(TestInput))
+	fmt.Printf("GOLD: %d\n", gold(utils.Input("day4/input")))
+
 }
