@@ -38,7 +38,7 @@ func XYToI(x, y, W int) int {
 
 func IntsOfString(line string) []int {
 	var ret []int
-	for _, num := range SplitTrim(line, " ") {
+	for _, num := range strings.Fields(line) {
 		ret = append(ret, Atoi(num))
 	}
 	return ret
