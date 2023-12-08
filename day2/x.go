@@ -35,7 +35,7 @@ func parseGame(line string) *game {
 	for _, round := range rounds {
 		vs := utils.SplitTrim(round, ",")
 		for _, v := range vs {
-			pv := utils.SplitTrim(v, " ")
+			pv := strings.Fields(v)
 			switch pv[1] {
 			case "green":
 				g.green = max(g.green, utils.Atoi(pv[0]))
