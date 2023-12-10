@@ -3,7 +3,6 @@ package main
 import (
 	"aoc2023/utils"
 	"fmt"
-	"math"
 	"strings"
 )
 
@@ -126,30 +125,24 @@ func lookup(s *step, c *category) step {
 	}
 	s.next = s2
 	if c.next != nil {
-		lookup(s2, c.next)
+		return lookup(s2, c.next)
 	}
-	return *s
+	return *s2
 }
 
-func run(a almanac) []int {
-	var steps []step
+func run(a almanac) int {
+	var best *step
 	for _, s := range a.seeds {
 		t := &step{
 			val:  s,
 			name: "seed",
 		}
-		steps = append(steps, lookup(t, a.categories))
-	}
-
-	var lowest []int
-	for _, s := range steps {
-		for s.next != nil {
-			s = *s.next
+		n := lookup(t, a.categories)
+		if best == nil || best.val > n.val {
+			best = &n
 		}
-		lowest = append(lowest, s.val)
 	}
-
-	return lowest
+	return best.val
 }
 
 type seedrange struct {
@@ -172,7 +165,6 @@ func constructRanges(seeds []int) []seedrange {
 
 func run2(a almanac) int {
 	sr := constructRanges(a.seeds)
-	// sr = mergeRanges(sr)
 	var best *step
 	seen := make(map[int]struct{})
 	for _, r := range sr {
@@ -185,9 +177,6 @@ func run2(a almanac) int {
 				name: "seed",
 			}
 			n := lookup(s, a.categories)
-			for n.next != nil {
-				n = *n.next
-			}
 			if best == nil || best.val > n.val {
 				if best != nil {
 					seen[best.val] = struct{}{}
@@ -202,13 +191,7 @@ func run2(a almanac) int {
 
 func silver(input []string) int {
 	almanac := parse(input)
-	alts := run(almanac)
-
-	sum := math.MaxInt
-	for _, i := range alts {
-		sum = min(sum, i)
-	}
-	return sum
+	return run(almanac)
 }
 
 func gold(input []string) int {
