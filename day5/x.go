@@ -152,50 +152,58 @@ func run(a almanac) []int {
 	return lowest
 }
 
-func grow(seeds []int) []int {
-	var ret []int
+type seedrange struct {
+	start int
+	len   int
+}
+
+func constructRanges(seeds []int) []seedrange {
+	var ret []seedrange
 	for i := 0; i < len(seeds); i += 2 {
 		start := seeds[i]
 		length := seeds[i+1]
-		for j := start; j < start+length; j++ {
-			ret = append(ret, j)
-		}
+		ret = append(ret, seedrange{
+			start: start,
+			len:   length,
+		})
 	}
 	return ret
 }
 
-func run2(a almanac) []int {
-	var steps []step
-	for _, s := range grow(a.seeds) {
-		t := &step{
-			val:  s,
-			name: "seed",
+func run2(a almanac) int {
+	sr := constructRanges(a.seeds)
+	// sr = mergeRanges(sr)
+	var best *step
+	seen := make(map[int]struct{})
+	for _, r := range sr {
+		for i := r.start; i < r.start+r.len; i++ {
+			if _, found := seen[i]; found {
+				continue
+			}
+			s := &step{
+				val:  i,
+				name: "seed",
+			}
+			n := lookup(s, a.categories)
+			for n.next != nil {
+				n = *n.next
+			}
+			if best == nil || best.val > n.val {
+				if best != nil {
+					seen[best.val] = struct{}{}
+				}
+				best = &n
+			}
 		}
-		steps = append(steps, lookup(t, a.categories))
 	}
 
-	var lowest []int
-	for _, s := range steps {
-		for s.next != nil {
-			s = *s.next
-		}
-		lowest = append(lowest, s.val)
-	}
-
-	return lowest
-}
-
-func printRange(c *category) {
-	for i := 48; i < 100; i++ {
-		fmt.Printf("%d\t%d\n", i, c.mapval(i))
-	}
+	return best.val
 }
 
 func silver(input []string) int {
 	almanac := parse(input)
 	alts := run(almanac)
 
-	// printRange(almanac.categories)
 	sum := math.MaxInt
 	for _, i := range alts {
 		sum = min(sum, i)
@@ -205,18 +213,12 @@ func silver(input []string) int {
 
 func gold(input []string) int {
 	almanac := parse(input)
-	alts := run2(almanac)
-
-	sum := math.MaxInt
-	for _, i := range alts {
-		sum = min(sum, i)
-	}
-	return sum
+	return run2(almanac)
 }
 
 func main() {
 	fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
-	fmt.Printf("SILVER: %d\n", silver(utils.Input("day5/input")))
+	//	fmt.Printf("SILVER: %d\n", silver(utils.Input("day5/input")))
 	fmt.Printf("TEST GOLD: %d\n", gold(TestInput))
 	fmt.Printf("GOLD: %d\n", gold(utils.Input("day5/input")))
 }
