@@ -83,6 +83,45 @@ func (nm *navigationmap) ghost(froms []string) ([]string, bool) {
 	return nexts, exited
 }
 
+func ghostloop(start string, m map[string][]string, dirs []string) int {
+	// fast := 0
+	slow := 0
+	curs := start
+	// curf := start
+
+	move := func(k, dir string) string {
+		if dir == "L" {
+			return m[k][0]
+		} else {
+			return m[k][1]
+		}
+	}
+	for {
+		nexts := dirs[slow%len(dirs)]
+		curs = move(curs, nexts)
+		slow++
+
+		if curs[2] == 'Z' {
+			return slow
+		}
+
+		// nextf := dirs[fast%len(dirs)]
+		// curf = move(curf, nextf)
+		// fast++
+
+		// nextf = dirs[fast%len(dirs)]
+		// curf = move(curf, nextf)
+		// fast++
+
+		// if curs[2] != 'Z' {
+		// 	continue
+		// }
+		// if curs == curf {
+		// 	return slow
+		// }
+	}
+}
+
 type elem struct {
 	name  string
 	left  *elem
@@ -137,14 +176,13 @@ func ghostStarts(nm *navigationmap) []string {
 func gold(input []string) int {
 	nm := parse(input)
 	currents := ghostStarts(nm)
-	for {
-		next, exited := nm.ghost(currents)
-		if exited {
-			break
-		}
-		currents = next
+	var rets []int
+	for _, c := range currents {
+		rets = append(rets, ghostloop(c, nm.elem, nm.steps))
 	}
-	return nm.count
+	a := rets[0]
+	b := rets[1]
+	return utils.LCM(a, b, rets[2:]...)
 }
 
 func main() {
