@@ -43,7 +43,12 @@ func differences(reading []int) [][]int {
 
 func predict(reading []int) int {
 	diffs := differences(reading)
-	sort.Slice(diffs, func(i, j int) bool { return i < j })
+	sort.Slice(diffs, func(i, j int) bool { return len(diffs[i]) < len(diffs[j]) })
+	if printDiffs {
+		for _, diff := range diffs {
+			fmt.Printf("%v\n", diff)
+		}
+	}
 	ph := 0
 	for _, diff := range diffs {
 		ph = ph + diff[len(diff)-1]
@@ -89,11 +94,9 @@ func gold(input []string) int {
 }
 
 func main() {
-	// single := func(input []string, i int) []string {
-	// 	return []string{input[i]}
-	// }
-	// fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
-	// fmt.Printf("SILVER: %d\n", silver(utils.Input("day9/input")))
+
+	fmt.Printf("TEST SILVER: %d\n", silver(TestInput))
+	fmt.Printf("SILVER: %d\n", silver(utils.Input("day9/input")))
 	fmt.Printf("TEST GOLD: %d\n", gold(TestInput))
 	fmt.Printf("GOLD: %d\n", gold(utils.Input("day9/input")))
 }
