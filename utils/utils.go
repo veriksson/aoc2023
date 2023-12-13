@@ -44,6 +44,7 @@ func IntsOfString(line string) []int {
 	return ret
 }
 
+// taken from https://siongui.github.io/2017/06/03/go-find-lcm-by-gcd/
 func GCD(a, b int) int {
 	for b != 0 {
 		t := b
@@ -61,4 +62,8 @@ func LCM(a, b int, integers ...int) int {
 	}
 
 	return result
+}
+
+func Single(input []string, i int) []string {
+	return []string{input[i]}
 }
